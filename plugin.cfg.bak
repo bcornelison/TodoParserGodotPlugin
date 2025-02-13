@@ -1,0 +1,7 @@
+[plugin]
+
+name="Code Todo Visualizer"
+description="Parses code files to display Todo Comments in a Kanban board"
+author="bcornelison"
+version=""
+script="Main.cs"

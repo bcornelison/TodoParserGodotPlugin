@@ -1,0 +1,104 @@
+[gd_scene load_steps=3 format=3 uid="uid://drst2ccgyenwb"]
+
+[ext_resource type="Script" path="res://TodoVisualizer.cs" id="1_sck0b"]
+[ext_resource type="PackedScene" uid="uid://y781nfpvgvpn" path="res://category_panel.tscn" id="2_oekjb"]
+
+[node name="TodoVisualizer" type="Control" node_paths=PackedStringArray("todoCategoryList", "importSettingsButton", "reScanButton", "categoryPanelContainer")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_sck0b")
+todoCategoryList = NodePath("PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer2/ScrollContainer/ItemList")
+importSettingsButton = NodePath("PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/ImportSettingsButton")
+reScanButton = NodePath("PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/ReScanButton")
+categoryPanelContainer = NodePath("PanelContainer/HBoxContainer/VBoxContainer2/MarginContainer/ScrollContainer/TodoCategoryPanel")
+categoryPanel = ExtResource("2_oekjb")
+LOWEST = Color(0, 0.686275, 0, 1)
+LOW = Color(0.588235, 1, 0, 1)
+MEDIUM = Color(1, 1, 0, 1)
+HIGH = Color(1, 0.588235, 0, 1)
+CRITICAL = Color(0.686275, 0, 0, 1)
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 95
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer2"]
+layout_mode = 2
+follow_focus = true
+vertical_scroll_mode = 2
+
+[node name="ItemList" type="ItemList" parent="PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer2/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ImportSettingsButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Import Settings"
+
+[node name="ReScanButton" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Re-Scan Directory"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TodoCategoryPanel" type="HFlowContainer" parent="PanelContainer/HBoxContainer/VBoxContainer2/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+initial_position = 2
+size = Vector2i(730, 350)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2

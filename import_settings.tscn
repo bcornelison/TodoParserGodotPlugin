@@ -1,0 +1,114 @@
+[gd_scene load_steps=2 format=3 uid="uid://dm6p0y4kf1ou"]
+
+[ext_resource type="Script" path="res://ImportSettings.cs" id="1_b27qe"]
+
+[node name="ImportSettings" type="Control" node_paths=PackedStringArray("chooseCodeDirectoryButton", "languageOptionButton", "categoryDelimiterButton", "importButton", "fileDialog")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_b27qe")
+chooseCodeDirectoryButton = NodePath("Panel/MarginContainer/VBoxContainer/CodeDirectoryButton")
+languageOptionButton = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer/CodingLanguageButton")
+categoryDelimiterButton = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer2/CategoryDelimiterButton")
+importButton = NodePath("Panel/MarginContainer/VBoxContainer/ImportButton")
+fileDialog = NodePath("FileDialog")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="CodeDirectoryButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Choose Code Directory"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Language"
+
+[node name="CodingLanguageButton" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+selected = 0
+item_count = 9
+popup/item_0/text = "C"
+popup/item_1/text = "CPP"
+popup/item_1/id = 1
+popup/item_2/text = "CSHARP"
+popup/item_2/id = 2
+popup/item_3/text = "GDSCRIPT"
+popup/item_3/id = 3
+popup/item_4/text = "GOLANG"
+popup/item_4/id = 4
+popup/item_5/text = "JAVA"
+popup/item_5/id = 5
+popup/item_6/text = "PYTHON"
+popup/item_6/id = 6
+popup/item_7/text = "RUBY"
+popup/item_7/id = 7
+popup/item_8/text = "RUST"
+popup/item_8/id = 8
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Category Separator"
+
+[node name="CategoryDelimiterButton" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+selected = 0
+item_count = 4
+popup/item_0/text = "| (pipe)"
+popup/item_1/text = "- (hyphen)"
+popup/item_1/id = 1
+popup/item_2/text = "_ (underscore)"
+popup/item_2/id = 2
+popup/item_3/text = ", (comma)"
+popup/item_3/id = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="ImportButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Import"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+auto_translate_mode = 1
+title = "Open a Directory"
+initial_position = 2
+size = Vector2i(730, 350)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
