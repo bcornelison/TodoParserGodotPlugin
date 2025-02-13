@@ -18,6 +18,8 @@ namespace CodeTodoVisualizer {
 		public PrioritySelected OnPrioritySelected;
 		public delegate void CategorySelected(string selectedItem);
 		public CategorySelected OnCategorySelected;
+		public delegate void ListContainerResized();
+		public ListContainerResized OnListContainerResized;
 
 		[Export] private ItemList todoCategoryList;
 		[Export] private Button importSettingsButton;
@@ -46,15 +48,19 @@ namespace CodeTodoVisualizer {
 			importSettingsButton.Pressed += OnImportSettingsButtonPressed;
 			reScanButton.Pressed += OnReImportPressed;
 			todoCategoryList.ItemSelected += OnCategoryListItemSelected;
+			categoryPanelContainer.Resized += OnCategoryPanelContainerResized;
 		}
         public override void _ExitTree(){
 			importSettingsButton.Pressed -= OnImportSettingsButtonPressed;
 			reScanButton.Pressed -= OnReImportPressed;
 			todoCategoryList.ItemSelected -= OnCategoryListItemSelected;
+			categoryPanelContainer.Resized -= OnCategoryPanelContainerResized;
 			if(Main.Instance == null) return;
         }
         
-		public override void _Process(double delta) {
+		private void OnCategoryPanelContainerResized() {
+			GD.Print("CategoryListContainer has been resized");
+			OnListContainerResized?.Invoke();
 		}
 		public void LoadData(List<ToDo> loadedData) {
 			ParsePrioritesCategories(loadedData);

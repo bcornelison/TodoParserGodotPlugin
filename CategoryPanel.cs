@@ -4,6 +4,7 @@ using static CodeTodoVisualizer.Util.Enums;
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CodeTodoVisualizer {
 	// TODO(HIGH|FEATURE|UNASSIGNED): When you click on a todo item, it should take user to source
@@ -27,6 +28,7 @@ namespace CodeTodoVisualizer {
 		public override void _EnterTree() {
 			todoVisualizer.OnCategorySelected += OnCategorySelected;
 			todoVisualizer.OnPrioritySelected += OnPrioritySelected;
+			todoVisualizer.OnListContainerResized += OnContainerResized;
 			todoList.ItemActivated += TodoClicked;
 
 			categoryLabel.Text = $"[center]{category}[/center]";
@@ -42,9 +44,15 @@ namespace CodeTodoVisualizer {
 		public override void _ExitTree() {
 			todoVisualizer.OnCategorySelected -= OnCategorySelected;
 			todoVisualizer.OnPrioritySelected -= OnPrioritySelected;
+			todoVisualizer.OnListContainerResized -= OnContainerResized;
 			todoList.ItemActivated -= TodoClicked;
 		}
 		
+		private void OnContainerResized() {
+			GD.Print("Resizing CategoryPanels");
+			CustomMinimumSize = new((GetParent<HFlowContainer>().Size.X / 5) - 10, (GetParent<HFlowContainer>().Size.X / 3) - 20);
+			GD.Print(CustomMinimumSize);
+		}
 		private void PopulateTree(PRIORITY selectedPriority = PRIORITY.ALL) {
 			fileSubtree = null;
 			parsedContents.Clear();
