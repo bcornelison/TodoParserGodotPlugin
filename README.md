@@ -26,7 +26,7 @@ where '//' is the selected language's comment syntax and within the ()'s you can
 The TODO is not case-sensitive, but the categories are (meaning THIS and this will be recognized as different categories).
 
 ## Priorities
-You can also use predefined priorities as a category, included priorities are (not case-sensitive):
+You can also use predefined priorities as a category, included priorities (not case-sensitive):
 1. LOWEST
 2. LOW
 3. MEDIUM (used as the default if one isn't specified)
