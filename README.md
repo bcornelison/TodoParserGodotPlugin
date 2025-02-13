@@ -1,11 +1,11 @@
-# Code ToDo Visualizer
-Code ToDo Visualizer is a program that parses through your code files and looks for ToDo comments. 
+# Todo Parser
+Todo Parser is a program that parses through your code files and looks for ToDo comments. 
 ![Main Program - Kanban board](./assets/screenshot.png)
 
 ## Usage
 
 
-When you first run Code ToDo Visualizer you will be presented with the Import Settigns screen where you
+When you first run Todo Parser you will be presented with the Import Settigns screen where you
 1. Choose your code directory - This is the root directory of the code files you wish to scan.
 2. Choose you language - This enables parsing of a specific language (you can also choose All if you utilize multiple languages)
 3. Choose your category delimiter - This is the delimiter used to separate your categories following the syntax above.
