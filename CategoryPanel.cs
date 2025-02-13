@@ -1,12 +1,12 @@
 using Godot;
 
-using static CodeTodoVisualizer.Util.Enums;
+using static TodoParser.Util.Enums;
 
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CodeTodoVisualizer {
+namespace TodoParser {
 	// TODO(HIGH|FEATURE|UNASSIGNED): When you click on a todo item, it should take user to source
 	// TODO(LOWEST|EXAMPLE): LOWEST Priority
 	// TODO(LOW|EXAMPLE): LOW Priority
@@ -49,9 +49,8 @@ namespace CodeTodoVisualizer {
 		}
 		
 		private void OnContainerResized() {
-			GD.Print("Resizing CategoryPanels");
-			CustomMinimumSize = new((GetParent<HFlowContainer>().Size.X / 5) - 10, (GetParent<HFlowContainer>().Size.X / 3) - 20);
-			GD.Print(CustomMinimumSize);
+			float parentXSize = GetParent<HFlowContainer>().Size.X;
+			CustomMinimumSize = new((parentXSize / 5) - 10, (parentXSize / 3) - 20);
 		}
 		private void PopulateTree(PRIORITY selectedPriority = PRIORITY.ALL) {
 			fileSubtree = null;

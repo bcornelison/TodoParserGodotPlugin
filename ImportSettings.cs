@@ -1,11 +1,11 @@
 using Godot;
 
-using static CodeTodoVisualizer.Util.Enums;
+using static TodoParser.Util.Enums;
 
 using System;
 using System.Runtime.CompilerServices;
 
-namespace CodeTodoVisualizer {
+namespace TodoParser {
 	public partial class ImportSettings : Control {
 		public delegate void ImportClicked();
 		public ImportClicked OnImportClicked;

@@ -1,7 +1,7 @@
 using Godot;
 using GC = Godot.Collections;
 
-using static CodeTodoVisualizer.Util.Enums;
+using static TodoParser.Util.Enums;
 
 using System;
 using System.Text.RegularExpressions;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace CodeTodoVisualizer {
+namespace TodoParser {
     // TODO(LOW|FEATURE|ASSIGNED|JOHNDOE): Implement proper error handling instead of printing to console
     // TODO(FEATURE|ASSIGNED|JANEDOE): Allow excluding files/folders (Regex?)
     // TODO(FEATURE|ASSIGNED|JANEDOE): Allow choosing to include subfolders (included by default)

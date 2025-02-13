@@ -1,6 +1,6 @@
 using Godot;
 
-namespace CodeTodoVisualizer.Util {
+namespace TodoParser.Util {
     public class Enums {
         public enum PROGRAMMINGLANGUAGES {
             ALL,

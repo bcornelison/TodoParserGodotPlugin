@@ -13,16 +13,16 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_sck0b")
-todoCategoryList = NodePath("PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer2/ScrollContainer/ItemList")
-importSettingsButton = NodePath("PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/ImportSettingsButton")
-reScanButton = NodePath("PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/ReScanButton")
-categoryPanelContainer = NodePath("PanelContainer/HBoxContainer/VBoxContainer2/MarginContainer/ScrollContainer/TodoCategoryPanel")
 categoryPanel = ExtResource("2_oekjb")
 LOWEST = Color(0, 0.686275, 0, 1)
 LOW = Color(0.588235, 1, 0, 1)
 MEDIUM = Color(1, 1, 0, 1)
 HIGH = Color(1, 0.588235, 0, 1)
 CRITICAL = Color(0.686275, 0, 0, 1)
+todoCategoryList = NodePath("PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer2/ScrollContainer/ItemList")
+importSettingsButton = NodePath("PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/ImportSettingsButton")
+reScanButton = NodePath("PanelContainer/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer/VBoxContainer/ReScanButton")
+categoryPanelContainer = NodePath("PanelContainer/HBoxContainer/VBoxContainer2/MarginContainer/ScrollContainer/TodoCategoryPanel")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1

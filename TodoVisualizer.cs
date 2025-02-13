@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection.Metadata;
-using static CodeTodoVisualizer.Util.Enums;
+using static TodoParser.Util.Enums;
 
-namespace CodeTodoVisualizer {
+namespace TodoParser {
 	// TODO(BUG|FEATURE): Should categories be case-sensitive (priorities are not)
 	// TODO(FEATURE): Allow changing selected language
 	public partial class TodoVisualizer : Control {
@@ -59,7 +59,6 @@ namespace CodeTodoVisualizer {
         }
         
 		private void OnCategoryPanelContainerResized() {
-			GD.Print("CategoryListContainer has been resized");
 			OnListContainerResized?.Invoke();
 		}
 		public void LoadData(List<ToDo> loadedData) {
