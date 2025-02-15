@@ -13,7 +13,6 @@ namespace TodoParser.Util {
             PYTHON,
             RUBY,
             RUST,
-
         }
         public enum PRIORITY {
             ALL,

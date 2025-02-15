@@ -5,9 +5,11 @@ using static TodoParser.Util.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Globalization;
+using System.Data;
+using System.Threading;
 
 namespace TodoParser {
-	// TODO(HIGH|FEATURE|UNASSIGNED): When you click on a todo item, it should take user to source
 	// TODO(LOWEST|EXAMPLE): LOWEST Priority
 	// TODO(LOW|EXAMPLE): LOW Priority
 	// TODO(MEDIUM|EXAMPLE): MEDIUM Priority
@@ -40,6 +42,7 @@ namespace TodoParser {
 			}
 			
 			PopulateTree();
+			OnContainerResized();
 		}
 		public override void _ExitTree() {
 			todoVisualizer.OnCategorySelected -= OnCategorySelected;
@@ -50,6 +53,7 @@ namespace TodoParser {
 		
 		private void OnContainerResized() {
 			float parentXSize = GetParent<HFlowContainer>().Size.X;
+			if(parentXSize <= 0) return;
 			CustomMinimumSize = new((parentXSize / 5) - 10, (parentXSize / 3) - 20);
 		}
 		private void PopulateTree(PRIORITY selectedPriority = PRIORITY.ALL) {
@@ -103,8 +107,56 @@ namespace TodoParser {
 			PopulateTree(selectedPriority);
 		}
 		private void TodoClicked() {
-			GD.Print($"{todoList.GetSelected().GetParent().GetText(0)}");
-			GD.Print($"\t{todoList.GetSelected().GetTooltipText(0)}");
+			string project = Main.Instance.CodeRootPath;
+			string file = todoList.GetSelected().GetParent().GetText(0);
+			string lineNumber = todoList.GetSelected().GetTooltipText(0).Split("\n")[0].Split(": ")[1];
+			string col = string.Empty;
+			string execCommand = Main.Instance.CodeEditorPath;
+			string execArgs = Main.Instance.CustomEditorArgs;
+
+			// Argument parsing logic below from Godot source code: 
+			// https://github.com/godotengine/godot/blob/96cdbbe5bd5e068953b5e972daaee37850686c31/modules/mono/editor/GodotTools/GodotTools/GodotSharpEditor.cs
+			List<string> args = [];
+			int from = 0;
+			int numChars = 0;
+			bool insideQuotes = false;
+			bool hasFileFlag = false;
+			execArgs = execArgs.ReplaceN("{line}", lineNumber.ToString(CultureInfo.InvariantCulture));
+			execArgs = execArgs.ReplaceN("{col}", col.ToString(CultureInfo.InvariantCulture));
+			execArgs = execArgs.StripEdges(true, true);
+			execArgs = execArgs.Replace("\\\\", "\\", StringComparison.Ordinal);
+
+			for (int i = 0; i < execArgs.Length; ++i) {
+				if (execArgs[i] == '"' && (i == 0 || execArgs[i - 1] != '\\') && i != execArgs.Length - 1) {
+					if (!insideQuotes) {
+						from++;
+					}
+					insideQuotes = !insideQuotes;
+				} else if ((execArgs[i] == ' ' && !insideQuotes) || i == execArgs.Length - 1) {
+					if (i == execArgs.Length - 1 && !insideQuotes) {
+						numChars++;
+					}
+
+					var arg = execArgs.Substr(from, numChars);
+					if (arg.Contains("{file}", StringComparison.OrdinalIgnoreCase)) {
+						hasFileFlag = true;
+					}
+
+					arg = arg.ReplaceN("{project}", project);
+					arg = arg.ReplaceN("{file}", file);
+					args.Add(arg);
+
+					from = i + 1;
+					numChars = 0;
+				} else {
+					numChars++;
+				}
+			}
+
+			if (!hasFileFlag) {
+				args.Add(file);
+			}
+			OS.Execute(execCommand, [.. args]);
 		}
 	}
 }

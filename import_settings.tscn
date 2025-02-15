@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://ImportSettings.cs" id="1_b27qe"]
 
-[node name="ImportSettings" type="Control" node_paths=PackedStringArray("chooseCodeDirectoryButton", "languageOptionButton", "categoryDelimiterButton", "importButton", "fileDialog")]
+[node name="ImportSettings" type="Control" node_paths=PackedStringArray("chooseCodeDirectoryButton", "allowRecursiveToggle", "languageOptionButton", "categoryDelimiterButton", "excludeFilterTextEdit", "codeEditorBrowseButton", "customEditorArgsTextEdit", "importButton", "codeDirectoryDialog", "codeEditorDialog")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,10 +13,15 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_b27qe")
 chooseCodeDirectoryButton = NodePath("Panel/MarginContainer/VBoxContainer/CodeDirectoryButton")
-languageOptionButton = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer/CodingLanguageButton")
-categoryDelimiterButton = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer2/CategoryDelimiterButton")
+allowRecursiveToggle = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContainer/AllowRecursiveToggle")
+languageOptionButton = NodePath("Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer/CodingLanguageButton")
+categoryDelimiterButton = NodePath("Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer/CategoryDelimiterButton")
+excludeFilterTextEdit = NodePath("Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer/ExcludeFilter")
+codeEditorBrowseButton = NodePath("Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer/CodeEditorButton")
+customEditorArgsTextEdit = NodePath("Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer/CustomEditorArgs")
 importButton = NodePath("Panel/MarginContainer/VBoxContainer/ImportButton")
-fileDialog = NodePath("FileDialog")
+codeDirectoryDialog = NodePath("CodeDirectoryDialog")
+codeEditorDialog = NodePath("CodeEditorDialog")
 
 [node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -33,7 +38,9 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_constants/separation = 10
 
 [node name="CodeDirectoryButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -42,15 +49,40 @@ text = "Choose Code Directory"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+alignment = 1
 
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label3" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Allow Recursive Scanning"
+
+[node name="AllowRecursiveToggle" type="CheckButton" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+button_pressed = true
+clip_text = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_bottom = 50
+
+[node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 25
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Language"
+horizontal_alignment = 2
 
-[node name="CodingLanguageButton" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CodingLanguageButton" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3
+alignment = 1
 selected = 0
 item_count = 9
 popup/item_0/text = "C"
@@ -71,17 +103,14 @@ popup/item_7/id = 7
 popup/item_8/text = "RUST"
 popup/item_8/id = 8
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label2" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "Category Separator"
+horizontal_alignment = 2
 
-[node name="CategoryDelimiterButton" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="CategoryDelimiterButton" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3
 alignment = 1
 selected = 0
 item_count = 4
@@ -93,10 +122,42 @@ popup/item_2/id = 2
 popup/item_3/text = ", (comma)"
 popup/item_3/id = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="Label4" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+visible = false
 layout_mode = 2
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_bottom = 25
+text = "Exclude Files and Folders"
+horizontal_alignment = 2
+
+[node name="ExcludeFilter" type="TextEdit" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+visible = false
+custom_minimum_size = Vector2(200, 65)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Currently WIP"
+editable = false
+wrap_mode = 1
+use_default_word_separators = false
+use_custom_word_separators = true
+custom_word_separators = ";"
+
+[node name="Label5" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Code Editor"
+horizontal_alignment = 2
+
+[node name="CodeEditorButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Browse"
+
+[node name="Label6" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Custom Editor Args"
+horizontal_alignment = 2
+
+[node name="CustomEditorArgs" type="TextEdit" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(300, 35)
+layout_mode = 2
+placeholder_text = "Ex: {project} --goto {file}:{line}:{col}"
 
 [node name="ImportButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -104,7 +165,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Import"
 
-[node name="FileDialog" type="FileDialog" parent="."]
+[node name="CodeDirectoryDialog" type="FileDialog" parent="."]
 auto_translate_mode = 1
 title = "Open a Directory"
 initial_position = 2
@@ -112,3 +173,12 @@ size = Vector2i(730, 350)
 ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
+
+[node name="CodeEditorDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(730, 350)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+show_hidden_files = true

@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 namespace TodoParser {
     // TODO(LOW|FEATURE|ASSIGNED|JOHNDOE): Implement proper error handling instead of printing to console
     // TODO(FEATURE|ASSIGNED|JANEDOE): Allow excluding files/folders (Regex?)
-    // TODO(FEATURE|ASSIGNED|JANEDOE): Allow choosing to include subfolders (included by default)
     public partial class Main : Node {
         public GC.Dictionary<PROGRAMMINGLANGUAGES, string> LanguageCommentRegex = new() {
             { PROGRAMMINGLANGUAGES.ALL, @"(\/\/|#|""""""|\/\*)\s?" },
@@ -58,6 +57,10 @@ namespace TodoParser {
         public string CodeRootPath { get; private set; }
         public PROGRAMMINGLANGUAGES SelectedCodeLanguage { get; private set; }
         public CATEGORYDELIMITERS SelectedDelimiter { get; private set; }
+        public bool AllowRecursive { get; private set; }
+		public string ExcludeFilter { get; private set; }
+		public string CodeEditorPath { get; private set; }
+		public string CustomEditorArgs { get; private set; }
         private List<ToDo> parsedTodos;
         public override void _EnterTree() {
             importSettingsInstance.OnImportClicked += ParseFiles;
@@ -96,9 +99,14 @@ namespace TodoParser {
                 return false;
             }
 
-            SelectedDelimiter = (CATEGORYDELIMITERS)(int)config.GetValue(ConfigSectionName, "category_delimiter");
             CodeRootPath = (string)config.GetValue(ConfigSectionName, "code_root_path");
             SelectedCodeLanguage = (PROGRAMMINGLANGUAGES)(int)config.GetValue(ConfigSectionName, "code_language", (int)PROGRAMMINGLANGUAGES.ALL);
+            SelectedDelimiter = (CATEGORYDELIMITERS)(int)config.GetValue(ConfigSectionName, "category_delimiter");
+            AllowRecursive = (bool)config.GetValue(ConfigSectionName, "allow_recursive", true);
+			ExcludeFilter = (string)config.GetValue(ConfigSectionName, "exclude_filter", string.Empty);
+			CodeEditorPath = (string)config.GetValue(ConfigSectionName, "code_editor_path", string.Empty);
+			CustomEditorArgs = (string)config.GetValue(ConfigSectionName, "custom_editor_args", string.Empty);
+
             return true;
         }
         private void ParseFiles() {
@@ -108,7 +116,10 @@ namespace TodoParser {
             regexPattern += @"(\btodo[(](.+?)[)]:?(.+))";
 
             parsedTodos = [];
-            string[] files = Directory.GetFiles(CodeRootPath, "*.*", SearchOption.AllDirectories);
+            SearchOption searchOption = AllowRecursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            GD.Print($"searchOption: {searchOption}");
+
+            string[] files = Directory.GetFiles(CodeRootPath, "*.*", searchOption);
 
             progressPopupLabel.Text = $"Parsing files in {CodeRootPath}";
             progressPopup.Visible = true;

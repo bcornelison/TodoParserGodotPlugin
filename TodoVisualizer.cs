@@ -8,7 +8,6 @@ using static TodoParser.Util.Enums;
 
 namespace TodoParser {
 	// TODO(BUG|FEATURE): Should categories be case-sensitive (priorities are not)
-	// TODO(FEATURE): Allow changing selected language
 	public partial class TodoVisualizer : Control {
 		public delegate void ReScanButtonPressed();
 		public ReScanButtonPressed OnReScanButtonPressed;
