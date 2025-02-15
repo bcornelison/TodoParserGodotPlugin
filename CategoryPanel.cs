@@ -1,6 +1,6 @@
 using Godot;
 
-using static TodoParser.Util.Enums;
+using static TodoParserGodotPlugin.Util.Enums;
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Globalization;
 using System.Data;
 using System.Threading;
 
-namespace TodoParser {
+namespace TodoParserGodotPlugin {
 	// TODO(LOWEST|EXAMPLE): LOWEST Priority
 	// TODO(LOW|EXAMPLE): LOW Priority
 	// TODO(MEDIUM|EXAMPLE): MEDIUM Priority

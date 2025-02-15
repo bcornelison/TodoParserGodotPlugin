@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection.Metadata;
-using static TodoParser.Util.Enums;
+using static TodoParserGodotPlugin.Util.Enums;
 
-namespace TodoParser {
+namespace TodoParserGodotPlugin {
 	// TODO(BUG|FEATURE): Should categories be case-sensitive (priorities are not)
 	public partial class TodoVisualizer : Control {
 		public delegate void ReScanButtonPressed();

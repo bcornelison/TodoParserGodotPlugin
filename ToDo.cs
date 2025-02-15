@@ -1,9 +1,9 @@
 using Godot;
 using GC = Godot.Collections;
 
-using static TodoParser.Util.Enums;
+using static TodoParserGodotPlugin.Util.Enums;
 
-namespace TodoParser {
+namespace TodoParserGodotPlugin {
     public class ToDo {
         public ToDo(GC.Array<string> categories, PRIORITY priority,
             string fileName, uint fileLine, string contents) {

@@ -1,6 +1,6 @@
 using Godot;
 
-namespace TodoParser.Util {
+namespace TodoParserGodotPlugin.Util {
     public class Enums {
         public enum PROGRAMMINGLANGUAGES {
             ALL,

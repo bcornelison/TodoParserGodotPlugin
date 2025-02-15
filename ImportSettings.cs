@@ -1,11 +1,11 @@
 using Godot;
 
-using static TodoParser.Util.Enums;
+using static TodoParserGodotPlugin.Util.Enums;
 
 using System;
 using System.Runtime.CompilerServices;
 
-namespace TodoParser {
+namespace TodoParserGodotPlugin {
 	public partial class ImportSettings : Control {
 		public delegate void ImportClicked();
 		public ImportClicked OnImportClicked;
