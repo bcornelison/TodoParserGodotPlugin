@@ -108,7 +108,7 @@ namespace TodoParser {
 		}
 		private void TodoClicked() {
 			string project = Main.Instance.CodeRootPath;
-			string file = todoList.GetSelected().GetParent().GetText(0);
+			string file = todoList.GetSelected().GetParent().GetTooltipText(0);
 			string lineNumber = todoList.GetSelected().GetTooltipText(0).Split("\n")[0].Split(": ")[1];
 			string col = string.Empty;
 			string execCommand = Main.Instance.CodeEditorPath;
