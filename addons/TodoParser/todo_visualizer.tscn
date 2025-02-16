@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://drst2ccgyenwb"]
 
-[ext_resource type="Script" path="res://TodoVisualizer.cs" id="1_sck0b"]
-[ext_resource type="PackedScene" uid="uid://y781nfpvgvpn" path="res://category_panel.tscn" id="2_oekjb"]
+[ext_resource type="Script" path="res://addons/TodoParser/TodoVisualizer.cs" id="1_sck0b"]
+[ext_resource type="PackedScene" uid="uid://y781nfpvgvpn" path="res://addons/TodoParser/category_panel.tscn" id="2_oekjb"]
 
 [node name="TodoVisualizer" type="Control" node_paths=PackedStringArray("todoCategoryList", "importSettingsButton", "reScanButton", "categoryPanelContainer")]
 layout_mode = 3

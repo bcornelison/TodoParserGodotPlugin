@@ -1,3 +1,4 @@
+#if TOOLS
 using Godot;
 
 using static TodoParserGodotPlugin.Util.Enums;
@@ -6,6 +7,7 @@ using System;
 using System.Runtime.CompilerServices;
 
 namespace TodoParserGodotPlugin {
+	[Tool]
 	public partial class ImportSettings : Control {
 		public delegate void ImportClicked();
 		public ImportClicked OnImportClicked;
@@ -14,19 +16,14 @@ namespace TodoParserGodotPlugin {
 		[Export] private OptionButton languageOptionButton;
 		[Export] private OptionButton categoryDelimiterButton;
 		[Export] private TextEdit excludeFilterTextEdit;
-		[Export] private Button codeEditorBrowseButton;
-		[Export] private TextEdit customEditorArgsTextEdit;
 		[Export] private Button importButton;
 		[Export] private FileDialog codeDirectoryDialog;
-		[Export] private FileDialog codeEditorDialog;
 
 		private string codeDirectory;
 		private PROGRAMMINGLANGUAGES selectedLanguage = PROGRAMMINGLANGUAGES.ALL;
 		private CATEGORYDELIMITERS selectedDelimiter = CATEGORYDELIMITERS.PIPE;
 		private bool allowRecursive = true;
 		private string excludeFilter = string.Empty;
-		private string codeEditorPath = string.Empty;
-		private string customEditorArgs = string.Empty;
 
 		public override void _Ready() {
 			VisibilityChanged += OnVisibilityChanged;
@@ -36,9 +33,6 @@ namespace TodoParserGodotPlugin {
             languageOptionButton.ItemSelected += OnLanguageSelected;
 			categoryDelimiterButton.ItemSelected += OnDelimiterSelected;
 			excludeFilterTextEdit.TextChanged += OnExcludeFilterTextChanged;
-			codeEditorBrowseButton.Pressed += OnCodeEditorBrowseButtonPressed;
-			codeEditorDialog.FileSelected += OnCodeEditorFileSelected;
-			customEditorArgsTextEdit.TextChanged += OnCustomEditorArgsTextChanged;
 			importButton.Pressed += OnImportButtonPressed;
 
 			languageOptionButton.Clear();
@@ -54,14 +48,12 @@ namespace TodoParserGodotPlugin {
             languageOptionButton.ItemSelected -= OnLanguageSelected;
 			categoryDelimiterButton.ItemSelected -= OnDelimiterSelected;
 			excludeFilterTextEdit.TextChanged -= OnExcludeFilterTextChanged;
-			codeEditorBrowseButton.Pressed -= OnCodeEditorBrowseButtonPressed;
-			codeEditorDialog.FileSelected -= OnCodeEditorFileSelected;
-			customEditorArgsTextEdit.TextChanged -= OnCustomEditorArgsTextChanged;
 			importButton.Pressed -= OnImportButtonPressed;
 		}
 		private void OnVisibilityChanged() {
 			if(!Visible) return;
-			if(Main.Instance.CodeRootPath != string.Empty) {
+			if(Main.Instance.LoadedSettings) {
+			GD.Print($"|{Main.Instance.CodeRootPath}|");
 				codeDirectory = Main.Instance.CodeRootPath;
 				chooseCodeDirectoryButton.Text = $"{codeDirectory}";
 
@@ -76,12 +68,6 @@ namespace TodoParserGodotPlugin {
 
 				excludeFilter = Main.Instance.ExcludeFilter;
 				excludeFilterTextEdit.Text = excludeFilter;
-
-				codeEditorPath = Main.Instance.CodeEditorPath;
-				codeEditorBrowseButton.Text = codeEditorPath;
-				
-				customEditorArgs = Main.Instance.CustomEditorArgs;
-				customEditorArgsTextEdit.Text = customEditorArgs;
 			}
 		}
 
@@ -104,16 +90,6 @@ namespace TodoParserGodotPlugin {
 		private void OnExcludeFilterTextChanged() {
 			excludeFilter = excludeFilterTextEdit.Text;
 		}
-		private void OnCodeEditorBrowseButtonPressed() {
-			codeEditorDialog.Show();
-		}
-		private void OnCodeEditorFileSelected(string file) {
-			codeEditorPath = file;
-			codeEditorBrowseButton.Text = file;
-		}
-		private void OnCustomEditorArgsTextChanged() {
-			customEditorArgs = customEditorArgsTextEdit.Text;
-		}
 		private void OnImportButtonPressed() {
 			SaveImportSettingsConfig();
 			
@@ -126,9 +102,8 @@ namespace TodoParserGodotPlugin {
 			configFile.SetValue(Main.ConfigSectionName, "code_language", (int)selectedLanguage);
 			configFile.SetValue(Main.ConfigSectionName, "category_delimiter", (int)selectedDelimiter);
 			configFile.SetValue(Main.ConfigSectionName, "exclude_filter", excludeFilter);
-			configFile.SetValue(Main.ConfigSectionName, "code_editor_path", codeEditorPath);
-			configFile.SetValue(Main.ConfigSectionName, "custom_editor_args", customEditorArgs);
 			configFile.Save("user://ParseSettings.cfg");
 		}
 	}
 }
+#endif

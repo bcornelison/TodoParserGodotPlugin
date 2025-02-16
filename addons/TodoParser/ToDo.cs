@@ -1,9 +1,11 @@
+#if TOOLS
 using Godot;
 using GC = Godot.Collections;
 
 using static TodoParserGodotPlugin.Util.Enums;
 
 namespace TodoParserGodotPlugin {
+    [Tool]
     public class ToDo {
         public ToDo(GC.Array<string> categories, PRIORITY priority,
             string fileName, uint fileLine, string contents) {
@@ -28,3 +30,4 @@ namespace TodoParserGodotPlugin {
         }
     }
 }
+#endif

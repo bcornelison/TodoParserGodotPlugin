@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://dm6p0y4kf1ou"]
 
-[ext_resource type="Script" path="res://ImportSettings.cs" id="1_b27qe"]
+[ext_resource type="Script" path="res://addons/TodoParser/ImportSettings.cs" id="1_b27qe"]
 
-[node name="ImportSettings" type="Control" node_paths=PackedStringArray("chooseCodeDirectoryButton", "allowRecursiveToggle", "languageOptionButton", "categoryDelimiterButton", "excludeFilterTextEdit", "codeEditorBrowseButton", "customEditorArgsTextEdit", "importButton", "codeDirectoryDialog", "codeEditorDialog")]
+[node name="ImportSettings" type="Control" node_paths=PackedStringArray("chooseCodeDirectoryButton", "allowRecursiveToggle", "languageOptionButton", "categoryDelimiterButton", "excludeFilterTextEdit", "importButton", "codeDirectoryDialog")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,11 +17,8 @@ allowRecursiveToggle = NodePath("Panel/MarginContainer/VBoxContainer/HBoxContain
 languageOptionButton = NodePath("Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer/CodingLanguageButton")
 categoryDelimiterButton = NodePath("Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer/CategoryDelimiterButton")
 excludeFilterTextEdit = NodePath("Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer/ExcludeFilter")
-codeEditorBrowseButton = NodePath("Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer/CodeEditorButton")
-customEditorArgsTextEdit = NodePath("Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer/CustomEditorArgs")
 importButton = NodePath("Panel/MarginContainer/VBoxContainer/ImportButton")
 codeDirectoryDialog = NodePath("CodeDirectoryDialog")
-codeEditorDialog = NodePath("CodeEditorDialog")
 
 [node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -84,24 +81,26 @@ layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 selected = 0
-item_count = 9
-popup/item_0/text = "C"
-popup/item_1/text = "CPP"
+item_count = 10
+popup/item_0/text = "ALL"
+popup/item_1/text = "C"
 popup/item_1/id = 1
-popup/item_2/text = "CSHARP"
+popup/item_2/text = "CPP"
 popup/item_2/id = 2
-popup/item_3/text = "GDSCRIPT"
+popup/item_3/text = "CSHARP"
 popup/item_3/id = 3
-popup/item_4/text = "GOLANG"
+popup/item_4/text = "GDSCRIPT"
 popup/item_4/id = 4
-popup/item_5/text = "JAVA"
+popup/item_5/text = "GOLANG"
 popup/item_5/id = 5
-popup/item_6/text = "PYTHON"
+popup/item_6/text = "JAVA"
 popup/item_6/id = 6
-popup/item_7/text = "RUBY"
+popup/item_7/text = "PYTHON"
 popup/item_7/id = 7
-popup/item_8/text = "RUST"
+popup/item_8/text = "RUBY"
 popup/item_8/id = 8
+popup/item_9/text = "RUST"
+popup/item_9/id = 9
 
 [node name="Label2" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
 layout_mode = 2
@@ -140,25 +139,6 @@ use_default_word_separators = false
 use_custom_word_separators = true
 custom_word_separators = ";"
 
-[node name="Label5" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
-layout_mode = 2
-text = "Code Editor"
-horizontal_alignment = 2
-
-[node name="CodeEditorButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
-layout_mode = 2
-text = "Browse"
-
-[node name="Label6" type="Label" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
-layout_mode = 2
-text = "Custom Editor Args"
-horizontal_alignment = 2
-
-[node name="CustomEditorArgs" type="TextEdit" parent="Panel/MarginContainer/VBoxContainer/MarginContainer/GridContainer"]
-custom_minimum_size = Vector2(300, 35)
-layout_mode = 2
-placeholder_text = "Ex: {project} --goto {file}:{line}:{col}"
-
 [node name="ImportButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -173,12 +153,3 @@ size = Vector2i(730, 350)
 ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
-
-[node name="CodeEditorDialog" type="FileDialog" parent="."]
-title = "Open a File"
-initial_position = 2
-size = Vector2i(730, 350)
-ok_button_text = "Open"
-file_mode = 0
-access = 2
-show_hidden_files = true

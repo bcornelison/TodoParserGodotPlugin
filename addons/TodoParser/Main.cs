@@ -1,3 +1,4 @@
+#if TOOLS
 using Godot;
 using GC = Godot.Collections;
 
@@ -10,9 +11,10 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace TodoParserGodotPlugin {
+    [Tool]
     // TODO(LOW|FEATURE|ASSIGNED|JOHNDOE): Implement proper error handling instead of printing to console
     // TODO(FEATURE|ASSIGNED|JANEDOE): Allow excluding files/folders (Regex?)
-    public partial class Main : Node {
+    public partial class Main : EditorPlugin {
         public GC.Dictionary<PROGRAMMINGLANGUAGES, string> LanguageCommentRegex = new() {
             { PROGRAMMINGLANGUAGES.ALL, @"(\/\/|#|""""""|\/\*)\s?" },
             { PROGRAMMINGLANGUAGES.C, @"(\/\/|\/\*)\s?" },
@@ -47,13 +49,16 @@ namespace TodoParserGodotPlugin {
             { PROGRAMMINGLANGUAGES.RUBY, ["rb"] },
             { PROGRAMMINGLANGUAGES.RUST, ["rs"] },
         };
-        [Export] public ImportSettings importSettingsInstance;
-        [Export] public TodoVisualizer todoVisualizerInstance;
-        [Export] private PanelContainer progressPopup;
-        [Export] private Label progressPopupLabel;
+        public const string PLUGINPATH = "res://addons/TodoParser/";
+        private PackedScene importSettingsScene = ResourceLoader.Load<PackedScene>($"{PLUGINPATH}import_settings.tscn");
+        public ImportSettings importSettingsInstance;
+        private PackedScene todoVisualizersScene = ResourceLoader.Load<PackedScene>($"{PLUGINPATH}todo_visualizer.tscn");
+        public TodoVisualizer todoVisualizerInstance;
+        // private PanelContainer progressPopup;
+        // private Label progressPopupLabel;
         public static Main Instance { get; private set; }
         public static string ConfigSectionName { get {return "IMPORTCONFIG";} private set{}}
-        private bool loadedSettings;
+        public bool LoadedSettings { get; private set; }
         public string CodeRootPath { get; private set; }
         public PROGRAMMINGLANGUAGES SelectedCodeLanguage { get; private set; }
         public CATEGORYDELIMITERS SelectedDelimiter { get; private set; }
@@ -63,14 +68,20 @@ namespace TodoParserGodotPlugin {
 		public string CustomEditorArgs { get; private set; }
         private List<ToDo> parsedTodos;
         public override void _EnterTree() {
+            LoadedSettings = LoadSettings();
+
+            importSettingsInstance = importSettingsScene.Instantiate<ImportSettings>();
+            importSettingsInstance.Visible = false;
+            EditorInterface.Singleton.GetEditorMainScreen().AddChild(importSettingsInstance);
+            todoVisualizerInstance = todoVisualizersScene.Instantiate<TodoVisualizer>();
+            todoVisualizerInstance.Visible = false;
+            EditorInterface.Singleton.GetEditorMainScreen().AddChild(todoVisualizerInstance);
+
             importSettingsInstance.OnImportClicked += ParseFiles;
             todoVisualizerInstance.OnReScanButtonPressed += ParseFiles;
             todoVisualizerInstance.OnImportSettingsPressed += OpenSettings;
 
             Instance ??= this;
-
-            loadedSettings = LoadSettings();
-            MakeVisible();
         }
         public override void _ExitTree() {
             importSettingsInstance.OnImportClicked -= ParseFiles;
@@ -80,13 +91,30 @@ namespace TodoParserGodotPlugin {
             Instance = null;
         }
 
-        public void MakeVisible() {
-            if(!loadedSettings)  {
-                importSettingsInstance.Visible = true;
-                todoVisualizerInstance.Visible = false;
+        public override bool _HasMainScreen(){
+            return true;
+        }
+
+        public override void _MakeVisible(bool visible) {
+            if(!visible) {
+                importSettingsInstance.Visible = visible;
+                todoVisualizerInstance.Visible = visible;
+                return;
+            }
+            if(!LoadedSettings)  {
+                importSettingsInstance.Visible = visible;
+                todoVisualizerInstance.Visible = !visible;
             } else {
                 ParseFiles();
             }
+        }
+
+        public override string _GetPluginName(){
+            return "Todo Parser";
+        }
+
+        public override Texture2D _GetPluginIcon(){
+            return EditorInterface.Singleton.GetBaseControl().GetThemeIcon("ResourcePreloader", "EditorIcons");
         }
 
         public bool LoadSettings() {
@@ -104,8 +132,8 @@ namespace TodoParserGodotPlugin {
             SelectedDelimiter = (CATEGORYDELIMITERS)(int)config.GetValue(ConfigSectionName, "category_delimiter");
             AllowRecursive = (bool)config.GetValue(ConfigSectionName, "allow_recursive", true);
 			ExcludeFilter = (string)config.GetValue(ConfigSectionName, "exclude_filter", string.Empty);
-			CodeEditorPath = (string)config.GetValue(ConfigSectionName, "code_editor_path", string.Empty);
-			CustomEditorArgs = (string)config.GetValue(ConfigSectionName, "custom_editor_args", string.Empty);
+			CodeEditorPath = (string)EditorInterface.Singleton.GetEditorSettings().GetSetting("dotnet/editor/custom_exec_path");
+			CustomEditorArgs = (string)EditorInterface.Singleton.GetEditorSettings().GetSetting("dotnet/editor/custom_exec_path_args");
 
             return true;
         }
@@ -121,8 +149,8 @@ namespace TodoParserGodotPlugin {
 
             string[] files = Directory.GetFiles(CodeRootPath, "*.*", searchOption);
 
-            progressPopupLabel.Text = $"Parsing files in {CodeRootPath}";
-            progressPopup.Visible = true;
+            // progressPopupLabel.Text = $"Parsing files in {CodeRootPath}";
+            // progressPopup.Visible = true;
 
             foreach(string file in files) {
                 if(!LanguageFileExtensions[SelectedCodeLanguage].Contains($"{file.GetExtension()}")) continue;
@@ -135,7 +163,7 @@ namespace TodoParserGodotPlugin {
                 }
 
                 uint currentLineIndex = 0;
-                progressPopupLabel.Text = $"Parsing: {file}";
+                // progressPopupLabel.Text = $"Parsing: {file}";
                 while(!openedFile.EofReached()) {
                     currentLineIndex++;
                     string currentLineContents = openedFile.GetLine();
@@ -169,13 +197,13 @@ namespace TodoParserGodotPlugin {
                     ToDo currentTodo = new(parsedCategories, parsedPriority, file, currentLineIndex, todoContents);
                     parsedTodos.Add(currentTodo);
                 }
-                progressPopupLabel.Text = $"Parsing {file} complete";
+                // progressPopupLabel.Text = $"Parsing {file} complete";
             }
-            progressPopupLabel.Text = "Finished Parsing All Files";
+            // progressPopupLabel.Text = "Finished Parsing All Files";
             todoVisualizerInstance.LoadData(parsedTodos);
 
-            Task.Delay(500);
-            progressPopup.Visible = false;
+            // Task.Delay(500);
+            // progressPopup.Visible = false;
             importSettingsInstance.Visible = false;
             todoVisualizerInstance.Visible = true;
         }
@@ -185,3 +213,4 @@ namespace TodoParserGodotPlugin {
         }
     }
 }
+#endif

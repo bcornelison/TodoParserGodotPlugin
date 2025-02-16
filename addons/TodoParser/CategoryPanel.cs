@@ -1,3 +1,4 @@
+#if TOOLS
 using Godot;
 
 using static TodoParserGodotPlugin.Util.Enums;
@@ -10,6 +11,7 @@ using System.Data;
 using System.Threading;
 
 namespace TodoParserGodotPlugin {
+	[Tool]
 	// TODO(LOWEST|EXAMPLE): LOWEST Priority
 	// TODO(LOW|EXAMPLE): LOW Priority
 	// TODO(MEDIUM|EXAMPLE): MEDIUM Priority
@@ -54,7 +56,7 @@ namespace TodoParserGodotPlugin {
 		private void OnContainerResized() {
 			float parentXSize = GetParent<HFlowContainer>().Size.X;
 			if(parentXSize <= 0) return;
-			CustomMinimumSize = new((parentXSize / 5) - 10, (parentXSize / 3) - 20);
+			CustomMinimumSize = new((parentXSize / 4) - 10, (parentXSize / 3) - 20);
 		}
 		private void PopulateTree(PRIORITY selectedPriority = PRIORITY.ALL) {
 			fileSubtree = null;
@@ -160,3 +162,4 @@ namespace TodoParserGodotPlugin {
 		}
 	}
 }
+#endif

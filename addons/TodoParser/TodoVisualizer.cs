@@ -1,3 +1,4 @@
+#if TOOLS
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Reflection.Metadata;
 using static TodoParserGodotPlugin.Util.Enums;
 
 namespace TodoParserGodotPlugin {
+	[Tool]
 	// TODO(BUG|FEATURE): Should categories be case-sensitive (priorities are not)
 	public partial class TodoVisualizer : Control {
 		public delegate void ReScanButtonPressed();
@@ -104,3 +106,4 @@ namespace TodoParserGodotPlugin {
 		}
 	}
 }
+#endif
