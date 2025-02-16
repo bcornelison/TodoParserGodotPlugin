@@ -1,7 +1,6 @@
 # Todo Parser
-Todo Parser is a program that parses through your code files and looks for ToDo comments. 
+Todo Parser is a program that parses through your code files and looks for ToDo comments.
 
-![Todo Parser - Kanban board overview](./assets/screenshot.png)
 
 ## Usage
 When you first run Todo Parser you will be presented with the Import Settigns screen.
@@ -9,8 +8,7 @@ When you first run Todo Parser you will be presented with the Import Settigns sc
 2. If you want to recursively scan (scan all subfolders) the code directory, leave the option ticked. If you want to scan only to root folder, toggle the option slider to off.
 3. Choose you language - This enables parsing of a specific language (you can also choose **ALL** if you utilize multiple languages).
 4. Choose your category delimiter - This is the delimiter used to separate your categories following the syntax above.
-5. Set up your code editor using the instructions in the Code Editor section.
-6. Press the Import button to recursively scan through the root directory you have set.
+5. If you have not set up an external dotnet editor in Godot's Editor Settings, set it up using the instructions in the Code Editor section.
 
 After it parses through your files it will display a kanban style board listing the todos by category. 
 
@@ -25,7 +23,10 @@ Make any changes, but don't want to re-open the program? Just click the Re-Scan 
 
 
 ## Code Editor
-On the Import settings page you can specify your default code editor. Click the browse button to select the code editor executable. Then in the Custom Editor Args field use the placeholders displayed below to add the arguments required to open the editor at the selected Todo comment.
+In the Editor Settings in Godot (In the main toolbar of Godot -> Editor -> Editor Settings), scroll to the bottom and open Dotnet -> Editor and 
+- Choose your editor tyoe
+- Browse to your Code Editor's executable
+- Fill in the Custom Exec Path Args using the table below.
 
 | Flags Field | Is replaced with               |
 |:-----------:|--------------------------------|
@@ -45,6 +46,7 @@ Some examples for various editors:
 | Vim (gVim)      | **"+call cursor({line}, {col})" {file}** |
 | Emacs           | **emacs +{line}:{col} {file}**           |
 | Sublime Text    | **{project} {file}:{line}:{column}**     |
+
 
 ## Parsing Syntax
 The syntax the parser looks for is 
