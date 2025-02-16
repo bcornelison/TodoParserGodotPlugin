@@ -2,7 +2,8 @@
 Todo Parser is a program that parses through your code files and looks for ToDo comments.
 
 
-## Usage
+## Installation and Usage
+Unzip the release download (or copy the addons/TodoParser folder from the source code) and place it into an "addons" folder in your projects root directory (structure should be res://addons/TodoParser/), then click on the "Todo Parser" tab at the top of the Godot Editor.
 When you first run Todo Parser you will be presented with the Import Settigns screen.
 1. Choose your code directory - This is the root directory of the code files you wish to scan.
 2. If you want to recursively scan (scan all subfolders) the code directory, leave the option ticked. If you want to scan only to root folder, toggle the option slider to off.
